@@ -1,9 +1,6 @@
-# SciBot - AI Chatbot for Research Paper Understanding 🤖科研小助手
+# SciBot - AI Chatbot for Research Paper Understanding 🤖
 
-[![Python Version][python-shield]][python-url]
-[![License: MIT][license-shield]][license-url]
-[![Issues][issues-shield]][issues-url]
-[![Stargazers][stars-shield]][stars-url]
+[
 
 <!-- PROJECT LOGO -->
 <br />
@@ -23,9 +20,9 @@
     <br />
     <!-- <a href="[YOUR_DEMO_LINK_HERE_IF_ANY]">View Demo</a> -->
     ·
-    <a href="https://github.com/[YOUR_GITHUB_USERNAME]/[YOUR_REPO_NAME]/issues">Report Bug</a>
+    <a href="https://github.com/GannaAsaad/Personalized-Chatbot-Project/issues">Report Bug</a>
     ·
-    <a href="https://github.com/[YOUR_GITHUB_USERNAME]/[YOUR_REPO_NAME]/issues">Request Feature</a>
+    <a href="https://github.com/GannaAsaad/Personalized-Chatbot-Project/issues">Request Feature</a>
   </p>
 </div>
 
