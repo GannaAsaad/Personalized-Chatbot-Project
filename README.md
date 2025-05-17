@@ -16,17 +16,14 @@
   <h3 align="center">SciBot</h3>
 
   <p align="center">
-    An AI-powered chatbot to simplify research paper comprehension and enable interactive exploration of scientific content.
-    <br />
-    <a href="[YOUR_PROJECT_LINK_HERE_IF_ANY]#readme"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <!-- <a href="[YOUR_DEMO_LINK_HERE_IF_ANY]">View Demo</a> -->
-    ·
-    <a href="https://github.com/GannaAsaad/Personalized-Chatbot-Project/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/GannaAsaad/Personalized-Chatbot-Project/issues">Request Feature</a>
-  </p>
+  An AI-powered chatbot to simplify research paper comprehension and enable interactive exploration of scientific content.
+  <br />
+  <br />
+  <a href="https://github.com/GannaAsaad/Personalized-Chatbot-Project/issues">Report Bug</a>
+  ·
+  <a href="https://github.com/GannaAsaad/Personalized-Chatbot-Project/issues">Request Feature</a>
+</p>
+
 </div>
 
 <!-- TABLE OF CONTENTS -->
