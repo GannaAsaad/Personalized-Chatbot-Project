@@ -232,7 +232,7 @@ async def ask_question_endpoint(payload: QuestionRequest):
         raise HTTPException(status_code=500, detail=f"An unexpected server error occurred: {str(e)}")
 
 
-@app.lifespan("shutdown")
+@app.on_event("shutdown")
 def shutdown_event():
     global app_state
     logger.info("Application shutting down. Cleaning up temporary PDF if it exists...")
