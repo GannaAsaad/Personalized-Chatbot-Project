@@ -1,6 +1,6 @@
 # SciBot - AI Chatbot for Research Paper Understanding 🤖
 
-![image](https://github.com/user-attachments/assets/962031ca-1261-40b9-be6d-e8c41047b715)
+
 
 
 <!-- PROJECT LOGO -->
@@ -78,7 +78,7 @@ SciBot addresses this challenge by providing an AI-powered chatbot that simplifi
 
 SciBot leverages a powerful stack of modern AI and web technologies:
 
-*   [https://img.shields.io/badge/Python-3.9+-blue.svg)][Python.org]][[https://www.python.org/downloads/]
+*   [![Python][Python.org]][Python-url]
 *   [![FastAPI][FastAPI.com]][FastAPI-url]
 *   [![LangChain][LangChain.com]][LangChain-url]
 *   [![HuggingFace Transformers][HuggingFace.co]][HuggingFace-url]
@@ -272,6 +272,7 @@ Don't forget to give the project a star! Thanks again!
 ## Contact
 
 GannaTullah Gouda - https://www.linkedin.com/in/gannatullah-gouda/
+                    gannaasaad@gmail.com
 
 Project Link: https://github.com/GannaAsaad/Personalized-Chatbot-Project 
 
