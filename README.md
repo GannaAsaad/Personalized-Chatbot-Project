@@ -1,6 +1,7 @@
 # SciBot - AI Chatbot for Research Paper Understanding 🤖
 
-[
+![image](https://github.com/user-attachments/assets/962031ca-1261-40b9-be6d-e8c41047b715)
+
 
 <!-- PROJECT LOGO -->
 <br />
@@ -102,8 +103,8 @@ Ensure you have the following installed:
 
 1.  **Clone the repository:**
     ```sh
-    git clone https://github.com/[YOUR_GITHUB_USERNAME]/[YOUR_REPO_NAME].git
-    cd [YOUR_REPO_NAME]
+    git clone https://github.com/GannaAsaad/Personalized-Chatbot-Project.git
+    cd Personalized-Chatbot-Project
     ```
 2.  **Create and activate a virtual environment (recommended):**
     ```sh
