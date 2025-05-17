@@ -47,7 +47,7 @@ def get_model():
         raise RuntimeError("Gemini model (explanation_module) is None even after configuration attempt.")
     return _model
 
-def generate_text(prompt, max_length=100, temperature=0.7):
+def generate_text(prompt, max_length=100, temperature=0.5):
     """Generate text using Gemini model"""
     model_instance = get_model()
     try:
