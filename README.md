@@ -2,6 +2,8 @@
 
 
 
+https://app.recraft.ai/community?imageId=8ce148d5-1679-4fd8-ac4d-3309965e143b
+
 
 <!-- PROJECT LOGO -->
 <br />
@@ -279,7 +281,6 @@ Project Link: https://github.com/GannaAsaad/Personalized-Chatbot-Project
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-*   Inspired by the [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
 *   [LangChain Documentation](https://python.langchain.com/)
 *   [FastAPI Documentation](https://fastapi.tiangolo.com/)
 *   [Google Gemini API](https://ai.google.dev/docs/gemini_api_overview)
