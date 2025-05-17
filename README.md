@@ -78,7 +78,7 @@ SciBot addresses this challenge by providing an AI-powered chatbot that simplifi
 
 SciBot leverages a powerful stack of modern AI and web technologies:
 
-*   [![Python][Python.org]][Python-url]
+*   [https://img.shields.io/badge/Python-3.9+-blue.svg)][Python.org]][[https://www.python.org/downloads/]
 *   [![FastAPI][FastAPI.com]][FastAPI-url]
 *   [![LangChain][LangChain.com]][LangChain-url]
 *   [![HuggingFace Transformers][HuggingFace.co]][HuggingFace-url]
@@ -267,18 +267,13 @@ Don't forget to give the project a star! Thanks again!
 4.  Push to the Branch (`git push origin feature/AmazingFeature`)
 5.  Open a Pull Request
 
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-*(You'll need to create a `LICENSE.txt` file with the MIT License text).*
 
 <!-- CONTACT -->
 ## Contact
 
-[Your Name] - [Your Email or Social Media Link (e.g., LinkedIn, Twitter)]
+GannaTullah Gouda - https://www.linkedin.com/in/gannatullah-gouda/
 
-Project Link: [https://github.com/[YOUR_GITHUB_USERNAME]/[YOUR_REPO_NAME]](https://github.com/[YOUR_GITHUB_USERNAME]/[YOUR_REPO_NAME])
+Project Link: https://github.com/GannaAsaad/Personalized-Chatbot-Project 
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
@@ -290,9 +285,3 @@ Project Link: [https://github.com/[YOUR_GITHUB_USERNAME]/[YOUR_REPO_NAME]](https
 *   [HuggingFace Sentence Transformers](https://www.sbert.net/)
 *   All the amazing PDF parsing libraries!
 
----
-
-**Tip for `requirements.txt`:**
-Once your virtual environment is set up and you've installed all packages, you can generate `requirements.txt` with:
-```sh
-pip freeze > requirements.txt
