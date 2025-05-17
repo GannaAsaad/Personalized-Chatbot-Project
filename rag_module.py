@@ -14,7 +14,7 @@ from functools import lru_cache # For caching resource-intensive loads
 # --- Configuration ---
 GEMINI_MODEL_ID = "gemini-1.5-flash-latest"
 DEFAULT_K_CONTEXT_CHUNKS = 4
-DEFAULT_TEMPERATURE = 0.3
+DEFAULT_TEMPERATURE = 0.5
 EMBEDDINGS_MODEL_NAME = "all-MiniLM-L6-v2"
 
 # --- Core LangChain and Helper Functions ---
