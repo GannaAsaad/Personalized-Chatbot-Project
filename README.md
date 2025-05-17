@@ -2,7 +2,7 @@
 
 
 
-https://app.recraft.ai/community?imageId=8ce148d5-1679-4fd8-ac4d-3309965e143b
+![SciBot Banner](./image.jpg)
 
 
 <!-- PROJECT LOGO -->
