@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SciBot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"> <!-- For Icons -->
+    <style>
+        :root {
+            /* Light Theme (default) */
+            --body-bg: #f4f7f6;
+            --chat-bg: #ffffff;
+            --user-msg-bg: #007bff;
+            --user-msg-text: #ffffff;
+            --assistant-msg-bg: #e9ecef;
+            --assistant-msg-text: #343a40;
+            --input-bg: #ffffff;
+            --border-color: #dee2e6;
+            --text-color: #495057;
+            --header-color: #0056b3;
+            --primary-accent: #007bff;
+            --error-color: #dc3545;
+            --success-color: #28a745;
+            --info-color: #17a2b8;
+            --font-family: 'Roboto', sans-serif;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --chat-input-area-bg: #f8f9fa;
+            --source-doc-bg: rgba(0,0,0,0.03);
+            --app-header-bg: var(--primary-accent);
+            --app-header-text: white;
+        }
+
+        [data-theme="dark"] {
+            --body-bg: #1e1e1e;
+            --chat-bg: #2c2c2c;
+            --user-msg-bg: #005cbf; /* Darker blue for user messages */
+            --user-msg-text: #e0e0e0;
+            --assistant-msg-bg: #3a3b3c; /* Common dark mode assistant bubble */
+            --assistant-msg-text: #e4e6eb;
+            --input-bg: #383838;
+            --border-color: #4a4a4a;
+            --text-color: #dcdcdc;
+            --header-color: #3498db; /* Brighter blue for headers in dark */
+            --primary-accent: #3498db; /* Consistent accent for dark */
+            --chat-input-area-bg: #252525;
+            --source-doc-bg: rgba(255,255,255,0.05);
+            --app-header-bg: #252525;
+            --app-header-text: #e0e0e0;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--body-bg);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top for long content */
+            min-height: 100vh;
+            padding: 20px;
+            overflow-y: auto;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 800px; /* Max width for the whole app */
+            background-color: var(--chat-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden; /* To contain rounded corners with children */
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .app-header {
+            background-color: var(--app-header-bg);
+            color: var(--app-header-text);
+            padding: 15px 20px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .app-header h1 {
+            font-size: 1.6em; /* Slightly reduced */
+            font-weight: 500;
+            margin: 0;
+        }
+        #themeToggle {
+            background: none;
+            border: none;
+            color: var(--app-header-text);
+            font-size: 1.3em;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .status-banner {
+            padding: 10px 20px;
+            text-align: center;
+            font-weight: 500;
+            display: none; /* Hidden by default */
+            transition: background-color 0.3s ease;
+        }
+        .status-banner.success { background-color: var(--success-color); color: white; }
+        .status-banner.error { background-color: var(--error-color); color: white; }
+        .status-banner.info { background-color: var(--info-color); color: white; }
+
+
+        .config-section {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            transition: border-color 0.3s ease;
+        }
+        .config-section h2 {
+            font-size: 1.3em;
+            color: var(--header-color);
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        .form-group input[type="text"], /* Kept for potential future use, but API key input removed */
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1em;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        .form-group input[type="file"] {
+            padding: 3px 10px; /* Fine-tune for file input */
+        }
+        .form-group input[type="file"]::file-selector-button {
+            background-color: var(--primary-accent);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.2s ease;
+        }
+        .form-group input[type="file"]::file-selector-button:hover {
+            background-color: var(--header-color);
+        }
+
+        button#uploadButton {
+            background-color: var(--primary-accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        button#uploadButton:hover {
+            background-color: var(--header-color);
+        }
+        button#uploadButton:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        button .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 8px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+
+        .summaries-section {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            max-height: 300px; /* Limit height and make scrollable */
+            overflow-y: auto;
+            display: none; /* Hidden initially */
+            transition: border-color 0.3s ease;
+        }
+        .summaries-section h2 {
+            font-size: 1.3em;
+            color: var(--header-color);
+            margin-bottom: 10px;
+            transition: color 0.3s ease;
+        }
+        .summary-item {
+            margin-bottom: 12px;
+            font-size: 0.95em;
+        }
+        .summary-item strong {
+            color: var(--primary-accent);
+            display: block;
+            margin-bottom: 3px;
+            transition: color 0.3s ease;
+        }
+
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 400px; /* Minimum height for chat */
+            transition: flex-grow 0.3s ease; /* For smooth growth */
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .message-bubble {
+            max-width: 75%;
+            padding: 10px 15px;
+            border-radius: 18px; /* More rounded bubbles */
+            margin-bottom: 10px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            position: relative; /* For potential pseudo-elements like tails */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .message-bubble.user {
+            background-color: var(--user-msg-bg);
+            color: var(--user-msg-text);
+            align-self: flex-end;
+            border-bottom-right-radius: 4px; /* Tail effect */
+        }
+        .message-bubble.assistant {
+            background-color: var(--assistant-msg-bg);
+            color: var(--assistant-msg-text);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px; /* Tail effect */
+        }
+        .message-bubble .sources {
+            font-size: 0.8em;
+            margin-top: 8px;
+            padding-top: 6px;
+            border-top: 1px solid rgba(0,0,0,0.1); /* Will need dark theme adjustment */
+            transition: border-color 0.3s ease;
+        }
+        [data-theme="dark"] .message-bubble .sources {
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .message-bubble .sources-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            margin-bottom: 5px;
+        }
+        .message-bubble .sources-header strong { display: inline; margin-bottom: 0; } /* Keep strong inline */
+        .message-bubble .sources-header .toggle-indicator {
+            color: var(--primary-accent);
+            transition: color 0.3s ease;
+        }
+        .message-bubble .sources-header .toggle-indicator i {
+             font-size: 0.9em;
+             margin-left: 5px;
+        }
+        .message-bubble .sources-list.collapsed {
+            display: none;
+        }
+        .message-bubble .source-doc {
+            margin-bottom: 4px; padding: 4px 6px; background-color: var(--source-doc-bg);
+            border-left: 2px solid var(--primary-accent); font-family: monospace; font-size: 0.9em;
+            border-radius: 3px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+         .message-bubble.assistant.thinking::after { /* Simple thinking dots */
+            content: ' .';
+            animation: dots 1.5s steps(5, end) infinite;
+            display: inline-block;
+        }
+        @keyframes dots { /* Uses assistant-msg-text, should adapt with theme */
+            0%, 20% { color: rgba(0,0,0,0); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0);}
+            40% { color: var(--assistant-msg-text); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0);}
+            60% { text-shadow: .25em 0 0 var(--assistant-msg-text), .5em 0 0 rgba(0,0,0,0);}
+            80%, 100% { text-shadow: .25em 0 0 var(--assistant-msg-text), .5em 0 0 var(--assistant-msg-text);}
+        }
+
+
+        .chat-input-area {
+            display: flex;
+            padding: 15px 20px;
+            border-top: 1px solid var(--border-color);
+            background-color: var(--chat-input-area-bg);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .chat-input-area input[type="text"] {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 20px; /* Pill shape */
+            margin-right: 10px;
+            font-size: 1em;
+            outline: none;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        .chat-input-area input[type="text"]:focus {
+            border-color: var(--primary-accent);
+        }
+        .chat-input-area button {
+            background-color: var(--primary-accent);
+            color: white;
+            border: none;
+            border-radius: 50%; /* Circular button */
+            width: 48px;
+            height: 48px;
+            font-size: 1.2em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease;
+        }
+        .chat-input-area button:hover {
+            background-color: var(--header-color);
+        }
+        .chat-input-area button:disabled {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1><b>SciBot</b> Your AI Assistant for Research Paper Comprehension</h1>
+            <button id="themeToggle" title="Toggle Theme"><i class="fas fa-moon"></i></button>
+        </header>
+
+        <div id="statusBanner" class="status-banner"></div>
+
+        <section class="config-section">
+            <h2><i class="fa fa-upload"></i> Upload PDF</h2>
+            <div class="form-group">
+                <label for="pdfFile">Upload PDF Document:</label>
+                <input type="file" id="pdfFile" accept=".pdf">
+            </div>
+            <button id="uploadButton">
+                <i class="fas fa-rocket"></i>   Process Paper
+                <span class="spinner" style="display: none;"></span>
+            </button>
+        </section>
+
+        <section id="summariesSection" class="summaries-section">
+            <h2><i class="fas fa-file-alt"></i> Section Summaries</h2>
+            <div id="summariesContent"></div>
+        </section>
+
+        <div class="chat-container" id="chatInterface" style="display: none; height: 60vh;"> <!-- Initial height set, JS will adjust for flex-grow -->
+            <div class="chat-messages" id="chatMessages">
+                <p style="text-align:center; color: #999; margin-top: 20px;">Chat will appear here once a paper is processed.</p>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="questionInput" placeholder="Ask a question about the paper...">
+                <button id="askButton" title="Send"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DOM Elements ---
+        // const apiKeyInput = document.getElementById('apiKey'); // REMOVED
+        const pdfFileInput = document.getElementById('pdfFile');
+        const uploadButton = document.getElementById('uploadButton');
+        const questionInput = document.getElementById('questionInput');
+        const askButton = document.getElementById('askButton');
+        const themeToggleButton = document.getElementById('themeToggle');
+        
+        const statusBanner = document.getElementById('statusBanner');
+        const summariesSection = document.getElementById('summariesSection');
+        const summariesContentDiv = document.getElementById('summariesContent');
+        const chatInterface = document.getElementById('chatInterface');
+        const chatMessagesDiv = document.getElementById('chatMessages');
+
+        // --- API Configuration ---
+        const API_BASE_URL = 'http://127.0.0.1:8000'; 
+        const UPLOAD_TIMEOUT_MS = 300000; // 5 minutes
+
+        let messageClearTimeout = null;
+        let thinkingMessageElement = null;
+
+        // --- UI Helper Functions ---
+        function toggleButtonSpinner(buttonElement, show) {
+            const icon = buttonElement.querySelector('i'); 
+            const spinner = buttonElement.querySelector('.spinner');
+            if (spinner) spinner.style.display = show ? 'inline-block' : 'none';
+            if (icon) icon.style.display = show ? 'none' : 'inline-block'; 
+            buttonElement.disabled = show;
+        }
+        
+        function showStatusBanner(type, message, persistent = false) {
+            if (messageClearTimeout) clearTimeout(messageClearTimeout);
+            
+            statusBanner.textContent = message;
+            statusBanner.className = `status-banner ${type}`;
+            statusBanner.style.display = 'block';
+
+            if (!persistent && type !== 'error') { 
+                messageClearTimeout = setTimeout(() => {
+                    statusBanner.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        function clearStatusBanner() {
+            if (messageClearTimeout) clearTimeout(messageClearTimeout);
+            statusBanner.style.display = 'none';
+        }
+
+        // --- Theme Toggle Functionality ---
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            if (theme === 'dark') {
+                themeToggleButton.innerHTML = '<i class="fas fa-sun"></i>';
+                themeToggleButton.title = "Switch to Light Mode";
+            } else {
+                themeToggleButton.innerHTML = '<i class="fas fa-moon"></i>';
+                themeToggleButton.title = "Switch to Dark Mode";
+            }
+        }
+
+        themeToggleButton.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(newTheme);
+        });
+
+        // --- Event Listeners ---
+        uploadButton.addEventListener('click', async () => {
+            clearStatusBanner();
+            const pdfFile = pdfFileInput.files[0];
+
+            // API Key check removed from here
+            if (!pdfFile) { showStatusBanner('error', 'Please select a PDF file.', true); return; }
+
+            const formData = new FormData();
+            // API Key form data append removed
+            formData.append('file', pdfFile);
+
+            toggleButtonSpinner(uploadButton, true);
+            showStatusBanner('info', 'Processing paper... This may take a moment (up to 5 mins).');
+            summariesSection.style.display = 'none'; 
+            chatInterface.style.display = 'none';
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), UPLOAD_TIMEOUT_MS);
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/upload_pdf/`, {
+                    method: 'POST', body: formData, signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+                const result = await response.json();
+
+                if (!response.ok) {
+                    showStatusBanner('error', `Error: ${result.detail || response.statusText}`, true);
+                } else {
+                    showStatusBanner('success', `Paper "${result.filename}" processed successfully!`, true);
+                    displaySummaries(result.summaries);
+                    summariesSection.style.display = 'block';
+                    
+                    chatInterface.style.display = 'flex'; 
+                    chatInterface.style.flexGrow = '1'; // Allow chat to take more space
+                    chatInterface.style.height = 'auto'; // Override fixed height for flex grow
+
+                    askButton.disabled = false;
+                    chatMessagesDiv.innerHTML = '<p style="text-align:center; color: #999; margin-top: 20px;">Ready to chat about the paper!</p>';
+                    pdfFileInput.value = ''; 
+                }
+            } catch (error) {
+                clearTimeout(timeoutId);
+                console.error('Upload error:', error);
+                if (error.name === 'AbortError') {
+                    showStatusBanner('error', 'Processing timed out. The paper might be too large.', true);
+                } else {
+                    showStatusBanner('error', 'Network error during upload. Is the backend running?', true);
+                }
+            } finally {
+                toggleButtonSpinner(uploadButton, false);
+            }
+        });
+
+        function displaySummaries(summaries) {
+            summariesContentDiv.innerHTML = '';
+            if (summaries && typeof summaries === 'object' && !summaries.error) {
+                let foundValidSummary = false;
+                for (const section in summaries) {
+                    const summaryText = summaries[section];
+                     if (summaryText && !summaryText.startsWith("Section not found") && !summaryText.startsWith("Error simplifying") && !summaryText.startsWith("Unable to simplify")) {
+                        foundValidSummary = true;
+                        const itemDiv = document.createElement('div');
+                        itemDiv.classList.add('summary-item');
+                        itemDiv.innerHTML = `<strong>${section.charAt(0).toUpperCase() + section.slice(1).replace(/_/g, ' ')}:</strong> ${summaryText}`;
+                        summariesContentDiv.appendChild(itemDiv);
+                    }
+                }
+                if (!foundValidSummary) {
+                    summariesContentDiv.innerHTML = '<p>No specific section summaries could be generated for this paper.</p>';
+                }
+            } else {
+                summariesContentDiv.innerHTML = `<p>Could not load summaries. ${summaries?.error || ''}</p>`;
+            }
+        }
+
+        askButton.addEventListener('click', handleAskQuestion);
+        questionInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) { 
+                e.preventDefault();
+                handleAskQuestion();
+            }
+        });
+
+        async function handleAskQuestion() {
+            clearStatusBanner(); 
+            const query = questionInput.value.trim();
+            if (!query) return;
+
+            const placeholder = chatMessagesDiv.querySelector('p[style*="text-align:center"]');
+            if (placeholder) placeholder.remove();
+            
+            addMessageToChat(query, 'user');
+            questionInput.value = '';
+            
+            thinkingMessageElement = addMessageToChat('Thinking...', 'assistant', null, true);
+            askButton.disabled = true;
+
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/ask/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: query }),
+                });
+                const result = await response.json();
+
+                if (thinkingMessageElement) {
+                    thinkingMessageElement.remove();
+                    thinkingMessageElement = null;
+                }
+
+                if (!response.ok) {
+                    addMessageToChat(`Sorry, an error occurred: ${result.detail || 'Unknown error'}`, 'assistant');
+                    showStatusBanner('error', `Q&A Error: ${result.detail || 'Unknown error'}`, true);
+                } else {
+                    addMessageToChat(result.answer, 'assistant', result.source_documents);
+                }
+            } catch (error) {
+                console.error('Ask error:', error);
+                if (thinkingMessageElement) {
+                    thinkingMessageElement.remove();
+                    thinkingMessageElement = null;
+                }
+                addMessageToChat('A network error occurred. Please try again.', 'assistant');
+                showStatusBanner('error', 'Network error during Q&A. Is the backend running?', true);
+            } finally {
+                askButton.disabled = false;
+            }
+        }
+
+        function addMessageToChat(text, sender, sources = null, isThinking = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message-bubble', sender);
+            
+            const textNode = document.createElement('p'); 
+            textNode.textContent = text;
+            messageDiv.appendChild(textNode);
+
+            if (isThinking) {
+                 messageDiv.classList.add('thinking'); 
+            }
+
+            if (sender === 'assistant' && sources && sources.length > 0) {
+                const sourcesContainerDiv = document.createElement('div');
+                sourcesContainerDiv.classList.add('sources');
+
+                const sourcesHeader = document.createElement('div');
+                sourcesHeader.classList.add('sources-header');
+                sourcesHeader.innerHTML = `<strong>Cited Sources:</strong> <span class="toggle-indicator"><i class="fas fa-chevron-down"></i></span>`;
+                
+                const sourcesList = document.createElement('div');
+                sourcesList.classList.add('sources-list', 'collapsed'); // Start collapsed
+
+                sources.forEach((source, index) => {
+                    const sourceP = document.createElement('div');
+                    sourceP.classList.add('source-doc');
+                    let pageContent = source.page_content || "N/A";
+                    pageContent = pageContent.length > 100 ? pageContent.substring(0, 100) + "..." : pageContent;
+                    sourceP.textContent = `[Doc ${index + 1}]: "${pageContent}"`;
+                    sourcesList.appendChild(sourceP);
+                });
+
+                sourcesHeader.addEventListener('click', () => {
+                    sourcesList.classList.toggle('collapsed');
+                    const icon = sourcesHeader.querySelector('.toggle-indicator i');
+                    if (sourcesList.classList.contains('collapsed')) {
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    } else {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    }
+                });
+                
+                sourcesContainerDiv.appendChild(sourcesHeader);
+                sourcesContainerDiv.appendChild(sourcesList);
+                messageDiv.appendChild(sourcesContainerDiv);
+            }
+            
+            chatMessagesDiv.appendChild(messageDiv);
+            chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight; 
+            return messageDiv; 
+        }
+
+        // --- Initial State ---
+        askButton.disabled = true; 
+        const savedTheme = localStorage.getItem('theme') || 
+                           (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        applyTheme(savedTheme);
+    </script>
+</body>
+</html>
